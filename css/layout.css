@@ -1,0 +1,95 @@
+/* ==========================================================================
+   layout.css
+   Page structure using CSS Grid + Flexbox.
+   Mobile-first: base rules target small screens, media queries add columns
+   as the viewport grows.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Shared section container
+   Every <section> is centered and given consistent vertical rhythm.
+   -------------------------------------------------------------------------- */
+.main,
+.hero,
+.section {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--space-md);
+}
+
+.section { padding-block: var(--space-lg); }
+
+/* --------------------------------------------------------------------------
+   Nav bar — Flexbox row: logo | links | toggle
+   -------------------------------------------------------------------------- */
+.nav {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding: var(--space-sm) var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+/* Hide the text links on very small screens to avoid crowding the toggle */
+@media (max-width: 30rem) {
+  .nav__list { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Hero — single centered column
+   -------------------------------------------------------------------------- */
+.hero {
+  padding-block: var(--space-xl) var(--space-lg);
+  text-align: center;
+}
+.hero__subtitle {
+  max-width: 34ch;
+  margin: var(--space-md) auto var(--space-md);
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  color: var(--color-text-muted);
+}
+.hero__actions {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   About — stacked on mobile, two columns (photo | text) on wider screens
+   -------------------------------------------------------------------------- */
+.about__grid {
+  display: grid;
+  gap: var(--space-md);
+  justify-items: center;
+}
+
+@media (min-width: 48rem) {
+  .about__grid {
+    grid-template-columns: 320px 1fr;  /* fixed photo, flexible text */
+    align-items: center;
+    justify-items: start;
+    gap: var(--space-lg);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Skills — responsive auto-fitting grid.
+   auto-fit + minmax means the columns count adjusts to the viewport with no
+   extra breakpoints: 1 column on phones, up to 3 on desktop.
+   -------------------------------------------------------------------------- */
+.skills__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+  list-style: none;
+}
+
+/* --------------------------------------------------------------------------
+   Contact — constrain the form so lines stay readable
+   -------------------------------------------------------------------------- */
+.contact-form { max-width: 520px; }
