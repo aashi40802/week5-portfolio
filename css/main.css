@@ -1,0 +1,298 @@
+/* ==========================================================================
+   main.css
+   Design tokens (CSS variables), base styles, typography, and components.
+   Naming follows BEM: .block, .block__element, .block--modifier.
+   Written mobile-first — layout.css adds the wider-screen rules on top.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. DESIGN TOKENS
+   Every color, space, and radius lives here as a custom property so the whole
+   site can be re-themed from one place. Dark mode just overrides these.
+   -------------------------------------------------------------------------- */
+:root {
+  /* Palette — Apple-inspired: off-white canvas, near-black ink, system blue */
+  --color-bg:            #fbfbfd;
+  --color-surface:       #ffffff;
+  --color-text:          #1d1d1f;
+  --color-text-muted:    #6e6e73;
+  --color-border:        #d2d2d7;
+  --color-accent:        #0071e3;
+  --color-accent-hover:  #0077ed;
+
+  /* Elevation */
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 12px 34px rgba(0, 0, 0, 0.12);
+
+  /* Spacing scale (keeps rhythm consistent) */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 7rem;
+
+  /* Shape */
+  --radius:    18px;
+  --radius-sm: 12px;
+
+  /* Type */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+               "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* Motion */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --speed: 0.3s;
+
+  /* Layout width */
+  --max-width: 1000px;
+}
+
+/* Dark theme — activated when <body> gets the .theme-dark class via JS.
+   Only the tokens change; no component rules need to be touched. */
+body.theme-dark {
+  --color-bg:           #000000;
+  --color-surface:      #1c1c1e;
+  --color-text:         #f5f5f7;
+  --color-text-muted:   #a1a1a6;
+  --color-border:       #2c2c2e;
+  --color-accent:       #2997ff;
+  --color-accent-hover: #4aa8ff;
+  --shadow-card:        0 4px 20px rgba(0, 0, 0, 0.5);
+  --shadow-card-hover:  0 12px 34px rgba(0, 0, 0, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   2. RESET & BASE
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+.page {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  /* Colors animate when the theme flips, so the switch feels smooth */
+  transition: background-color var(--speed) var(--ease),
+              color var(--speed) var(--ease);
+}
+
+img { max-width: 100%; display: block; }
+
+/* Accessible focus ring — visible for keyboard users, not on mouse click */
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   3. TYPOGRAPHY
+   Big, tightly-tracked headings are the Apple signature. clamp() scales the
+   size fluidly between mobile and desktop without extra media queries.
+   -------------------------------------------------------------------------- */
+.hero__title {
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;   /* tight tracking = the Apple look */
+}
+
+.section__title {
+  font-size: clamp(1.8rem, 4vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* Small uppercase labels that head each section */
+.section__label,
+.hero__eyebrow {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-sm);
+}
+
+/* --------------------------------------------------------------------------
+   4. BUTTONS
+   -------------------------------------------------------------------------- */
+.button {
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  border: none;
+  border-radius: 980px;          /* pill shape, Apple-style */
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--speed) var(--ease),
+              transform var(--speed) var(--ease);
+}
+
+.button--primary {
+  background-color: var(--color-accent);
+  color: #fff;
+}
+.button--primary:hover { background-color: var(--color-accent-hover); }
+
+.button--ghost {
+  background-color: transparent;
+  color: var(--color-accent);
+  border: 1px solid var(--color-border);
+}
+.button--ghost:hover { border-color: var(--color-accent); }
+
+/* Subtle press feedback shared by both variants */
+.button:active { transform: scale(0.97); }
+
+/* --------------------------------------------------------------------------
+   5. HEADER & NAV
+   -------------------------------------------------------------------------- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  /* Frosted-glass bar — another Apple cue */
+  background-color: color-mix(in srgb, var(--color-bg) 80%, transparent);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav__logo {
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.nav__list { display: flex; gap: var(--space-md); list-style: none; }
+
+.nav__link {
+  text-decoration: none;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  transition: color var(--speed) var(--ease);
+}
+/* :hover and :focus-visible share the same accent treatment */
+.nav__link:hover,
+.nav__link:focus-visible { color: var(--color-text); }
+
+/* Theme toggle button (icon swaps via ::before in animations.css) */
+.nav__theme-toggle {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: border-color var(--speed) var(--ease);
+}
+.nav__theme-toggle:hover { border-color: var(--color-accent); }
+
+/* --------------------------------------------------------------------------
+   6. CARDS (skills)
+   -------------------------------------------------------------------------- */
+.skill-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  list-style: none;
+  box-shadow: var(--shadow-card);
+  /* transform + shadow animate on hover; see animations.css */
+  transition: transform var(--speed) var(--ease),
+              box-shadow var(--speed) var(--ease);
+}
+
+.skill-card__title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
+}
+.skill-card__desc { color: var(--color-text-muted); font-size: 0.95rem; }
+
+/* --------------------------------------------------------------------------
+   7. ABOUT
+   -------------------------------------------------------------------------- */
+.about__photo {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+.about__text { color: var(--color-text-muted); margin-bottom: var(--space-sm); }
+.about__text:first-of-type { color: var(--color-text); }
+
+/* --------------------------------------------------------------------------
+   8. CONTACT FORM
+   -------------------------------------------------------------------------- */
+.contact__lead,
+.contact-form__lead { color: var(--color-text-muted); margin-bottom: var(--space-md); }
+
+.contact-form__field { margin-bottom: var(--space-md); }
+
+.contact-form__label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+}
+
+.contact-form__input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--speed) var(--ease),
+              box-shadow var(--speed) var(--ease);
+}
+.contact-form__input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 25%, transparent);
+}
+.contact-form__input--area { resize: vertical; min-height: 120px; }
+
+/* Invalid state added by JS via the --error modifier */
+.contact-form__input--error { border-color: #ff3b30; }
+
+.contact-form__error {
+  display: block;
+  min-height: 1.2em;
+  margin-top: var(--space-xs);
+  font-size: 0.85rem;
+  color: #ff3b30;
+}
+
+.contact-form__success {
+  margin-top: var(--space-sm);
+  font-weight: 500;
+  color: var(--color-accent);
+}
+
+/* --------------------------------------------------------------------------
+   9. FOOTER
+   -------------------------------------------------------------------------- */
+.footer {
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-md);
+  text-align: center;
+}
+.footer__text { color: var(--color-text-muted); font-size: 0.9rem; }

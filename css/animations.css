@@ -1,0 +1,104 @@
+/* ==========================================================================
+   animations.css
+   Keyframes, hover micro-interactions, and scroll-reveal effects.
+   Kept intentionally restrained — a few purposeful moments, not confetti.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. PAGE-LOAD: hero fades up on first paint
+   -------------------------------------------------------------------------- */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Stagger the hero children so they arrive in sequence */
+.hero__eyebrow  { animation: fade-up 0.6s var(--ease) 0.05s both; }
+.hero__title    { animation: fade-up 0.6s var(--ease) 0.15s both; }
+.hero__subtitle { animation: fade-up 0.6s var(--ease) 0.25s both; }
+.hero__actions  { animation: fade-up 0.6s var(--ease) 0.35s both; }
+
+/* --------------------------------------------------------------------------
+   2. SCROLL REVEAL
+   Sections start slightly down and transparent; main.js adds .is-visible
+   (via IntersectionObserver) when they scroll into view.
+   -------------------------------------------------------------------------- */
+.section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s var(--ease),
+              transform 0.6s var(--ease);
+}
+.section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   3. CARD HOVER — lift + deeper shadow (properties defined in main.css)
+   -------------------------------------------------------------------------- */
+.skill-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* --------------------------------------------------------------------------
+   4. NAV LINK UNDERLINE
+   Uses the ::after pseudo-element to grow an underline from the left on hover.
+   -------------------------------------------------------------------------- */
+.nav__link {
+  position: relative;
+}
+.nav__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--speed) var(--ease);
+}
+.nav__link:hover::after,
+.nav__link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* --------------------------------------------------------------------------
+   5. THEME TOGGLE ICON
+   A sun/moon glyph drawn with a pseudo-element; swaps when body is dark.
+   -------------------------------------------------------------------------- */
+.nav__theme-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-text);
+  /* The inset shadow carves a crescent = moon (light mode default) */
+  box-shadow: inset -5px -3px 0 0 var(--color-bg);
+  transition: all var(--speed) var(--ease);
+}
+/* In dark mode, fill it to a full "sun" disc */
+body.theme-dark .nav__theme-icon {
+  background: var(--color-text);
+  box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-text);
+  transform: scale(0.7);
+}
+
+/* --------------------------------------------------------------------------
+   6. REDUCED MOTION
+   Respect users who prefer less movement: disable transforms/animations
+   but keep everything visible (never leave revealed content stuck hidden).
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .section { opacity: 1; transform: none; }
+}

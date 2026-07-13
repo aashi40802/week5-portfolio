@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aashi — Web Developer</title>
+  <meta name="description" content="Portfolio of Aashi, a front-end web developer.">
+
+  <!--
+    Stylesheets are split by responsibility (Week 5 requirement):
+      main.css       -> CSS variables, base styles, typography, components
+      layout.css     -> CSS Grid page structure and responsive breakpoints
+      animations.css -> keyframes, transitions, scroll reveals
+    Order matters: main defines the variables the other two rely on.
+  -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body class="page">
+
+  <!-- ===================== HEADER / NAV ===================== -->
+  <header class="header">
+    <nav class="nav" aria-label="Primary">
+      <a href="#top" class="nav__logo">Aashi</a>
+
+      <ul class="nav__list">
+        <li class="nav__item"><a class="nav__link" href="#about">About</a></li>
+        <li class="nav__item"><a class="nav__link" href="#skills">Skills</a></li>
+        <li class="nav__item"><a class="nav__link" href="#contact">Contact</a></li>
+      </ul>
+
+      <!-- Theme toggle. aria-pressed is updated by theme-switcher.js -->
+      <button class="nav__theme-toggle" id="themeToggle"
+              type="button" aria-pressed="false"
+              aria-label="Switch to dark mode">
+        <span class="nav__theme-icon" aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <main class="main" id="top">
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero" id="hero">
+      <p class="hero__eyebrow">Front-end developer</p>
+      <h1 class="hero__title">
+        Building clean, <br>responsive websites.
+      </h1>
+      <p class="hero__subtitle">
+        I turn ideas into fast, accessible interfaces with HTML, CSS, and JavaScript.
+      </p>
+      <div class="hero__actions">
+        <a class="button button--primary" href="#contact">Get in touch</a>
+        <a class="button button--ghost" href="#skills">See my skills</a>
+      </div>
+    </section>
+
+    <!-- ===================== ABOUT ===================== -->
+    <section class="section about" id="about">
+      <p class="section__label">About</p>
+      <div class="about__grid">
+        <img class="about__photo" src="images/profile.jpg"
+             alt="Profile photo" width="320" height="320">
+        <div class="about__body">
+          <h2 class="section__title">A bit about me</h2>
+          <p class="about__text">
+            I'm a self-taught web developer who started with a single HTML file
+            and kept building. Over the last few weeks I've worked through HTML,
+            CSS, JavaScript, and a full multi-page website project.
+          </p>
+          <p class="about__text">
+            I care about writing code that's readable and easy to maintain, and
+            about designs that feel calm and work on any screen size.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SKILLS ===================== -->
+    <section class="section skills" id="skills">
+      <p class="section__label">Skills</p>
+      <h2 class="section__title">What I work with</h2>
+
+      <!-- Skill cards laid out with CSS Grid (see layout.css) -->
+      <ul class="skills__grid">
+        <li class="skill-card">
+          <h3 class="skill-card__title">HTML</h3>
+          <p class="skill-card__desc">Semantic, accessible markup and well-structured documents.</p>
+        </li>
+        <li class="skill-card">
+          <h3 class="skill-card__title">CSS</h3>
+          <p class="skill-card__desc">Grid, Flexbox, custom properties, and responsive layouts.</p>
+        </li>
+        <li class="skill-card">
+          <h3 class="skill-card__title">JavaScript</h3>
+          <p class="skill-card__desc">DOM manipulation, events, and form validation.</p>
+        </li>
+        <li class="skill-card">
+          <h3 class="skill-card__title">Responsive design</h3>
+          <p class="skill-card__desc">Mobile-first layouts that adapt across breakpoints.</p>
+        </li>
+        <li class="skill-card">
+          <h3 class="skill-card__title">Git &amp; GitHub</h3>
+          <p class="skill-card__desc">Version control and deploying with GitHub Pages.</p>
+        </li>
+        <li class="skill-card">
+          <h3 class="skill-card__title">Accessibility</h3>
+          <p class="skill-card__desc">Keyboard focus, alt text, and reduced-motion support.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ===================== CONTACT ===================== -->
+    <section class="section contact" id="contact">
+      <p class="section__label">Contact</p>
+      <h2 class="section__title">Let's talk</h2>
+      <p class="contact__lead">Have a project or a question? Send me a message.</p>
+
+      <!-- novalidate lets our JS handle validation instead of the browser -->
+      <form class="contact-form" id="contactForm" novalidate>
+        <div class="contact-form__field">
+          <label class="contact-form__label" for="name">Name</label>
+          <input class="contact-form__input" id="name" name="name"
+                 type="text" autocomplete="name" required>
+          <span class="contact-form__error" data-error-for="name"></span>
+        </div>
+
+        <div class="contact-form__field">
+          <label class="contact-form__label" for="email">Email</label>
+          <input class="contact-form__input" id="email" name="email"
+                 type="email" autocomplete="email" required>
+          <span class="contact-form__error" data-error-for="email"></span>
+        </div>
+
+        <div class="contact-form__field">
+          <label class="contact-form__label" for="message">Message</label>
+          <textarea class="contact-form__input contact-form__input--area"
+                    id="message" name="message" rows="5" required></textarea>
+          <span class="contact-form__error" data-error-for="message"></span>
+        </div>
+
+        <button class="button button--primary contact-form__submit" type="submit">
+          Send message
+        </button>
+
+        <!-- Success message, revealed by JS on valid submit -->
+        <p class="contact-form__success" id="formSuccess" role="status" hidden>
+          Thanks — your message has been sent.
+        </p>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <p class="footer__text">© <span id="year"></span> Aashi. Built with HTML, CSS &amp; JavaScript.</p>
+  </footer>
+
+  <!-- type="module" keeps the script scoped and deferred by default -->
+  <script type="module" src="js/theme-switcher.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
